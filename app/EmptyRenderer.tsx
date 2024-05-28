@@ -2,14 +2,8 @@ import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 
 const EmptyRenderer = () => {
-
-    
-  return (
-    <div
-      style={{ display: "flex", flexDirection: "column", marginBottom: "16px", width: "300px" }}
-    >
-    </div>
-  );
+  // Since this component is supposed to render nothing,
+  return null;
 };
 
 export default withJsonFormsControlProps(EmptyRenderer);

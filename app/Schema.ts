@@ -1,3 +1,5 @@
+import { title } from "process";
+
 export const Schema = async () => {
   return {
     ClientOverview: {
@@ -13,6 +15,9 @@ export const Schema = async () => {
             type: "string",
             minLength: 1,
             title: "Physical Address",
+          },
+          spaceCreator: {
+            type: "string",
           },
           govtIssuedNum: {
             type: "string",
@@ -43,14 +48,17 @@ export const Schema = async () => {
             type: "string",
             enum: ["01-06", "06-20", "20+"],
           },
+          primaryRegulators: {
+            type: "string",
+            minLength: 1,
+          },
+          crdOrSec: {
+            type: "string",
+            minLength: 1,
+          },
           existRelationship: {
             type: "string",
             enum: ["Yes", "NO"],
-          },
-          clientKnowDetails: {
-            type: "string",
-            minLength: 1,
-            title: "",
           },
           advisorRelation: {
             type: "string",
@@ -60,17 +68,6 @@ export const Schema = async () => {
             type: "string",
             minLength: 1,
             title: "",
-          },
-          add: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                name: {
-                  type: "string",
-                },
-              },
-            },
           },
         },
         required: [
@@ -119,6 +116,10 @@ export const Schema = async () => {
                 label: "Website Address",
                 scope: "#/properties/websiteAddress",
               },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
             ],
           },
           {
@@ -134,6 +135,10 @@ export const Schema = async () => {
                 label: "Advisor Government Issued Number",
                 scope: "#/properties/advisorGovtIssuedNum",
               },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
             ],
           },
           {
@@ -144,18 +149,36 @@ export const Schema = async () => {
                 label: "No. of Employees",
                 scope: "#/properties/numOfEmployees",
                 options: {
-                  format: "radio",
+                  format: "singlecheckbox",
                 },
               },
             ],
           },
-
           {
-            type: "VerticalLayout",
+            type: "HorizontalLayout",
             elements: [
               {
                 type: "Control",
-                scope: "#/properties/add",
+                label: "Name of Primary Regulator(s)",
+                scope: "#/properties/primaryRegulators",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "If regulated, provide CRD or SEC",
+                scope: "#/properties/crdOrSec",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
               },
             ],
           },
@@ -169,17 +192,6 @@ export const Schema = async () => {
                 options: {
                   format: "radio",
                 },
-              },
-            ],
-          },
-          {
-            type: "HorizontalLayout",
-            elements: [
-              {
-                type: "Control",
-                label:
-                  "How do you know the client and for how long? Have you previously serviced the client",
-                scope: "#/properties/clientKnowDetails",
               },
             ],
           },
@@ -205,6 +217,14 @@ export const Schema = async () => {
                 label: "Describe the Client/Advisor's structure",
                 scope: "#/properties/clientStructureDescription",
               },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
             ],
           },
         ],
@@ -219,28 +239,57 @@ export const Schema = async () => {
         advisorGovtIssuedNum: "987-65-4321",
         numOfEmployees: "20+",
         existRelationship: "Yes",
-        clientKnowDetails: "Known for 5 years",
         advisorRelation: "Yes",
         clientStructureDescription: "Complex structure",
+        primaryRegulators: ["abd", "xyz"],
       },
     },
+
     KeyPersonnel: {
       schema: {
         type: "object",
         properties: {
-          xyz: {
+          heading: {
+            type: "string",
+          },
+          spaceCreator: {
+            type: "string",
+          },
+          subHeading: {
+            type: "string",
+          },
+          name: {
             type: "string",
             minLength: 1,
-            title: "XYZ",
           },
-          abc: {
+          email: {
             type: "string",
             minLength: 1,
-            title: "ABC",
           },
+          "keyPersonalInfo": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                keyPersonalName: {
+                  type: "string",
+                  minLength: 1,
+                },
+                tradingExperience: {
+                  type: "string",
+                  minLength: 1,
+                },
+                tradingStratergy: {
+                  type: "string",
+                  minLength: 1,
+                },
+              }
+            }
+          }
         },
-        required: ["xyz", "abc"],
+        required: ["name", "email"],
       },
+
       uiSchema: {
         type: "VerticalLayout",
         elements: [
@@ -249,36 +298,178 @@ export const Schema = async () => {
             elements: [
               {
                 type: "Control",
-                label: "XYZ",
-                scope: "#/properties/xyz",
+                label: "Customer Contact Information",
+                scope: "#/properties/heading",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Name",
+                scope: "#/properties/name",
               },
               {
                 type: "Control",
-                label: "ABC",
-                scope: "#/properties/abc",
+                label: "Email",
+                scope: "#/properties/email",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "VerticalLayout",
+            elements: [
+              {
+                type: "string",
+                label: "Key Principal Information",
+                scope: "#/properties/heading",
+              },
+              {
+                type: "string",
+                label:
+                  "Provide the following: 1) names of the client’s key principals 2) a brief description of their background /trading experience, and 3) a brief description of their expected trading strategy: (if registered, please fill in using the Form ADV)",
+                scope: "#/properties/subHeading",
+              },
+            ],
+          },
+          {
+            "type": "VerticalLayout",
+            "elements": [
+              {
+                "type": "Control",
+                "scope": "#/properties/keyPersonalInfo"
+              }
+            ]
+          },
+          {
+            type: "VerticalLayout",
+            elements: [
+              {
+                type: "string",
+                label: "Beneficial Ownership Information",
+                scope: "#/properties/heading",
+              },
+              {
+                type: "string",
+                label:
+                  "If the client is NOT SEC/FINRA Regulated, provide names of key management and each individual, if any, who owns either directly or indirectly, 10% or greater of the account being opened",
+                scope: "#/properties/subHeading",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Name",
+                scope: "#/properties/name",
+              },
+              {
+                type: "Control",
+                label: "Email",
+                scope: "#/properties/email",
+              },
+              {
+                type: "Control",
+                labe: "DOB",
+                scope: "#/properties/name",
               },
             ],
           },
         ],
       },
-      data: {}
+      data: {},
     },
     BusinessSection: {
       schema: {
         type: "object",
         properties: {
-          www: {
+          clientType: {
             type: "string",
-            minLength: 1,
-            title: "www",
+            enum: [
+              "Hedge Fund",
+              "Broker-Dealer",
+              "Family office",
+              "Introducing Broker",
+              "Trust",
+              "Corporate LLC",
+              "Allocators",
+              "40 ACT Fund",
+              "RIAs",
+              "Asset Manager",
+            ],
           },
-          ttt: {
+          accountType: {
             type: "string",
-            minLength: 1,
-            title: "AtttBC",
+            enum: [
+              "Prime/Custody",
+              "Equity Execution",
+              "Fully Paid Lending",
+              "Options Execution",
+              "Repo/Reverse Repo",
+              "Capital Introduction",
+              "Fixed Income",
+            ],
+          },
+          marginType: {
+            type: "string",
+            enum: ["Portfolio Margin", "Reg-T", "Cash", "N/A"],
+          },
+          isFinancialInstitution: {
+            type: "string",
+            enum: ["Yes", "No"],
+          },
+          customerType: {
+            type: "string",
+            enum: ["Proprietary", "Omnibus", "Trading Group"],
+          },
+          isFundAdmin: {
+            type: "string",
+            enum: ["Yes", "No"],
+          },
+          isSolePrimeBroker: {
+            type: "string",
+            enum: ["Yes", "No"],
+          },
+          tradeAway: {
+            type: "string",
+            enum: ["Yes", "No"],
+          },
+          isLegalEntity: {
+            type: "string",
+            enum: ["Yes", "No"],
+          },
+          isTransferred: {
+            type: "string",
+            enum: ["Yes", "No"],
+          },
+          managementSystem: {
+            type: "string",
+          },
+          isExitPrimeBroker: {
+            type: "string",
+            enum: ["Yes", "No"],
+          },
+          projFundingDate: {
+            type: "string",
+            format: "date",
+            title: "Projected Funding Date",
+          },
+          clientStratergy: {
+            type: "string",
+          },
+          spaceCreator: {
+            type: "string",
           },
         },
-        required: ["xyz", "abc"],
+        required: ["clientType"],
       },
       uiSchema: {
         type: "VerticalLayout",
@@ -288,33 +479,278 @@ export const Schema = async () => {
             elements: [
               {
                 type: "Control",
-                label: "XYZ",
-                scope: "#/properties/www",
+                label: "Client Type",
+                scope: "#/properties/clientType",
+                options: {
+                  format: "radio",
+                },
               },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
               {
                 type: "Control",
-                label: "ABC",
-                scope: "#/properties/ttt",
+                label: "Account Type",
+                scope: "#/properties/accountType",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Account Type",
+                scope: "#/properties/marginType",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Is the customer a foreign financial institution or Non-US Equity?",
+                scope: "#/properties/isFinancialInstitution",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Special Customer Type",
+                scope: "#/properties/customerType",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Does the client have a fund admin?",
+                scope: "#/properties/isFundAdmin",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Will Clear Street be the sole Prime Broker for the Advisor or Fund?",
+                scope: "#/properties/isSolePrimeBroker",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Will the client trade away?",
+                scope: "#/properties/tradeAway",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Does the client have a bank account in the name of the legal entity being onboarded?",
+                scope: "#/properties/isLegalEntity",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Are all assets being transferred in the name of the legal entity being onboarded?",
+                scope: "#/properties/isTransferred",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Name of Order/Execution Management System (Redi, Sterling, BBG EMSX, etc.) by product",
+                scope: "#/properties/managementSystem",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Has client been exited by another Prime Broker within thepast 3 years?  If yes, what was the reason?",
+                scope: "#/properties/isExitPrimeBroker",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Projected Funding Date",
+                scope: "#/properties/projFundingDate",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Projected Funding Date",
+                scope: "#/properties/clientStratergy",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
               },
             ],
           },
         ],
       },
-      data: {}
+      data: {},
     },
-    Trading: {
+    Financials: {
       schema: {
         properties: {
-          add: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                name: {
-                  type: "string",
-                },
-              },
-            },
+          isCustomerFunds: {
+            type: "string",
+            enum: ["Prop Funds", "Customer FUnd"],
+          },
+          srcFunding: {
+            type: "string",
+            enum: [
+              "Family Office",
+              "Personal Wealth",
+              "Outside Investors",
+              "Separately Managed Account (SMA)",
+              "Other",
+            ],
+          },
+          heading: {
+            type: "string",
+          },
+          onShore: {
+            type: "string",
+            minLength: 1,
+            title: "Provide Full Legal Name",
+          },
+          offShore: {
+            type: "string",
+            minLength: 1,
+            title: "Provide Full Legal Name",
+          },
+          spaceCreator: {
+            type: "string",
+          },
+          srcWealth: {
+            type: "string",
+            enum: [
+              "Income from Employment",
+              "Family Inheritance",
+              "Business Ownership",
+              "Sales of Shares or Other Investments",
+              "Property Sale",
+              "Other",
+            ],
+          },
+          advisorAUM: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundAUM: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          netAUM: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundLeverage: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundDebit: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundShort: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          annualRevenue: {
+            type: "string",
+            minLength: 1,
+            title: "$",
           },
         },
       },
@@ -322,13 +758,387 @@ export const Schema = async () => {
         type: "VerticalLayout",
         elements: [
           {
-            type: "Control",
-            scope: "#/properties/add",
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Are funds trading prop funds or customer funds?",
+                scope: "#/properties/isCustomerFunds",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Source of Funding  (if registered or has fund admin, can skip)",
+                scope: "#/properties/srcFunding",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Source of Funding - On-Shore & Off-Shore %  (if registered, can skip)",
+                scope: "#/properties/heading",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "On-Shore %",
+                scope: "#/properties/onShore",
+              },
+              {
+                type: "Control",
+                label: "Off-Shore %",
+                scope: "#/properties/offShore",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Source of Wealth  (if registered or has fund admin, can skip)",
+                scope: "#/properties/srcWealth",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Advisor AUM",
+                scope: "#/properties/advisorAUM",
+              },
+              {
+                type: "Control",
+                label: "Fund AUM",
+                scope: "#/properties/fundAUM",
+              },
+              {
+                type: "Control",
+                label: "Net Funds Assets held at Clear Street",
+                scope: "#/properties/netAUM",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Estimated Fund Leverage",
+                scope: "#/properties/fundLeverage",
+              },
+              {
+                type: "Control",
+                label: "Estimated Fund Debit Balance",
+                scope: "#/properties/fundDebit",
+              },
+              {
+                type: "Control",
+                label: "Estimated Fund Short Balance",
+                scope: "#/properties/fundShort",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Estimated Annualized Revenue",
+                scope: "#/properties/annualRevenue",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
           },
         ],
       },
-      data: {}
+      data: {},
+    },
+    Trading: {
+      schema: {
+        properties: {
+          heading: {
+            type: "string",
+          },
+          subHeading: {
+            type: "string",
+          },
+          monthlyTradeVol: {
+            type: "string",
+          },
+          monthlyLowPriceTraded: {
+            type: "string",
+          },
+          monthlyRestrictedTraded: {
+            type: "string",
+          },
+          isRestrictedStock: {
+            type: "string",
+            enum: ["Yes", "No", "N/A"],
+          },
+          spaceCreator: {
+            type: "string",
+          },
+          listedEquities: {
+            type: "string",
+            minLength: 1,
+          },
+          otcSecurities: {
+            type: "string",
+            minLength: 1,
+          },
+          warrants: {
+            type: "string",
+            minLength: 1,
+          },
+          indexOptions: {
+            type: "string",
+            minLength: 1,
+          },
+          rule: {
+            type: "string",
+            minLength: 1,
+          },
+          isAdvisorParticipated: {
+            type: "string",
+            enum: [
+              "Registered Direct Offerings",
+              "Rule 144/Rule 144A",
+              "ELOC Financing Offerings",
+              "Buybacks/Affliate Sales",
+              "Low-Priced/Microcap",
+              "% Rule 144/Rule 144 A",
+              "Unit split/SPAC",
+              "Unit Split/SPAC",
+            ],
+          },
+          monthlyShares: {
+            type: "string",
+            minLength: 1,
+          },
+          monthlyContracts: {
+            type: "string",
+            minLength: 1,
+          },
+          monthlyLowPriceShares: {
+            type: "string",
+            minLength: 1,
+          },
+          monthlyRestrictedSecurities: {
+            type: "string",
+            minLength: 1,
+          },
+        },
+      },
+      uiSchema: {
+        type: "VerticalLayout",
+        elements: [
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Has risk and restricted stock compliance reviewed the sample portfolio yet? (if applicable)",
+                scope: "#/properties/isRestrictedStock",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "VerticalLayout",
+            elements: [
+              {
+                type: "string",
+                label: "Trading Strategy Information",
+                scope: "#/properties/heading",
+              },
+              {
+                typpe: "string",
+                label:
+                  "Estimate the percentage (by market value) of client trading activity in the following categories",
+                scope: "#/properties/subHeading",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "% Listed Equities & ETFs",
+                scope: "#/properties/listedEquities",
+              },
+              {
+                type: "Control",
+                label: "% OTC Securities",
+                scope: "#/properties/otcSecurities",
+              },
+              {
+                type: "Control",
+                label: "% Warrants",
+                scope: "#/properties/warrants",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "% Index Options",
+                scope: "#/properties/indexOptions",
+              },
+              {
+                type: "Control",
+                label: "% Rule 144/Rule 144 A",
+                scope: "#/properties/rule",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "% Index Options",
+                scope: "#/properties/isAdvisorParticipated",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "string",
+                label: "Total Estimated Monthly Trade Volume",
+                scope: "#/properties/heading",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Shares",
+                scope: "#/properties/monthlyShares",
+              },
+              {
+                type: "Control",
+                label: "Contracts",
+                scope: "#/properties/monthlyContracts",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "string",
+                label: "Estimated Monthly Low-Price (< $5) Traded",
+                scope: "#/properties/heading",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Shares",
+                scope: "#/properties/monthlyLowPriceShares",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "string",
+                label: "Estimated Monthly Restricted Securities Traded",
+                scope: "#/properties/heading",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Shares",
+                scope: "#/properties/monthlyRestrictedSecurities",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+        ],
+      },
+      data: {},
     },
   };
-}; 
-
+};

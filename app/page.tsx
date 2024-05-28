@@ -1,11 +1,12 @@
 "use client";
+import "./globals.css";
 import React, { useState, useEffect } from "react";
 import { JsonForms } from "@jsonforms/react";
 import { useFormik } from "formik";
 import {
-  rankWith,
-  isStringControl,
   isEnumControl,
+  isStringControl,
+  rankWith,
   scopeEndsWith,
 } from "@jsonforms/core";
 import {
@@ -13,13 +14,17 @@ import {
   materialRenderers,
 } from "@jsonforms/material-renderers";
 import TextInputRenderer from "./TextInputRenderer";
-import RadioButtonRenderer from "./RadioButtonRenderer";
+import SingleSelectionCheckBoxControl from "./SingleSelectionCheckBoxControl";
+import EmptyRenderer from "./EmptyRenderer";
+import CustomAddButtonRenderer from "./CustomAddButtonRenderer";
+
 import Tabs from "./Tabs";
 import styles from "./page.module.css";
 import { Schema } from "./Schema";
-import SingleSelectionCheckBoxControl from "./SingleSelectionCheckBoxControl";
-import CustomTradingControl from "./CustomTradingControl";
-import EmtyRenderer from "./EmptyRenderer";
+import RadioButtonRenderer from "./RadioButtonRenderer";
+import SingleInputRenderer from "./SingleInputRenderer";
+import HeaderRenderer from "./HeaderRenderer";
+import SubHeaderRenderer from "./SubHeaderRenderer";
 
 interface SchemaType {
   [key: string]: {
@@ -32,7 +37,7 @@ interface SchemaType {
 export default function Home() {
   const [schemas, setSchemas] = useState<SchemaType>({});
   const [activeTab, setActiveTab] = useState("");
-  const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchAndSetSchemas();
@@ -42,6 +47,7 @@ export default function Home() {
     const fetchedSchemas = await Schema();
     setSchemas(fetchedSchemas);
     setActiveTab(Object.keys(fetchedSchemas)[0]);
+    setLoading(false);
   };
 
   const formik = useFormik({
@@ -51,12 +57,12 @@ export default function Home() {
     },
   });
 
-  // Function to set form data when a new schema is selected
   useEffect(() => {
-    // Check if data exists for the active tab
-    const dataForActiveTab = schemas[activeTab]?.data;
-    if (dataForActiveTab) {
-      setFormData(dataForActiveTab);
+    if (schemas[activeTab]) {
+      const dataForActiveTab = schemas[activeTab].data;
+      if (dataForActiveTab) {
+        formik.setValues(dataForActiveTab);
+      }
     }
   }, [activeTab, schemas]);
 
@@ -64,11 +70,36 @@ export default function Home() {
     setActiveTab(name);
   };
 
-  const renderers = [
+  const renderers: any = [
     { tester: rankWith(3, isStringControl), renderer: TextInputRenderer },
     {
-      tester: rankWith(3, isEnumControl),
+      tester: rankWith(1000, scopeEndsWith("numOfEmployees")),
       renderer: SingleSelectionCheckBoxControl,
+    },
+    {
+      tester: rankWith(300, scopeEndsWith("spaceCreator")),
+      renderer: EmptyRenderer,
+    },
+    {
+      tester: rankWith(400, scopeEndsWith("primaryRegulators")),
+      renderer: CustomAddButtonRenderer,
+    },
+    {
+      tester: rankWith(400, scopeEndsWith("keyPersonalInfo")),
+      renderer: CustomAddButtonRenderer,
+    },
+    { tester: rankWith(400, isEnumControl), renderer: RadioButtonRenderer },
+    {
+      tester: rankWith(2000, scopeEndsWith("percentageInfo")),
+      renderer: SubHeaderRenderer,
+    },
+    {
+      tester: rankWith(2000, scopeEndsWith("subHeading")),
+      renderer: SubHeaderRenderer,
+    },
+    {
+      tester: rankWith(2000, scopeEndsWith("heading")),
+      renderer: HeaderRenderer,
     },
     ...materialRenderers,
   ];
@@ -76,32 +107,32 @@ export default function Home() {
   const activeSchema = schemas[activeTab]?.schema;
   const activeUiSchema = schemas[activeTab]?.uiSchema;
 
+  if (loading || !activeSchema || !activeUiSchema) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <main
-      style={{
-        display: "flex",
-        height: "800px",
-        width: "100%",
-      }}
-    >
-      <div style={{ width: "100%" }}>
+    <main className="flex h-full w-full bg-[#000000]">
+      <div className="w-full">
         <Tabs
           tabs={Object.keys(schemas)}
           activeTab={activeTab}
           onTabClick={handleTabClick}
         />
         <div className={styles.main}>
-          <h3 style={{ textAlign: "left", margin: "20px 0" }}>{activeTab}</h3>
-          <form onSubmit={formik.handleSubmit} style={{ alignItems: "center" }}>
+          <h3 className="text-left my-5 text-[#525D70] text-base">{activeTab}</h3>
+          <form onSubmit={formik.handleSubmit} className="items-center">
             <JsonForms
               schema={activeSchema}
               uischema={activeUiSchema}
-              data={formData}
+              data={formik.values}
               cells={materialCells}
               renderers={renderers}
               onChange={({ data }) => formik.setValues(data)}
             />
-            <button type="submit">Submit</button>
+            <button className="mt-8 w-[88px] h-[32px] bg-[#0F1D47] text-[#2C64F4]" type="submit">
+              Submit
+            </button>
           </form>
         </div>
       </div>

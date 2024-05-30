@@ -1,4 +1,3 @@
-import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 
 const EmptyRenderer = () => {

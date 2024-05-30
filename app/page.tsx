@@ -16,8 +16,6 @@ import {
 import TextInputRenderer from "./TextInputRenderer";
 import SingleSelectionCheckBoxControl from "./SingleSelectionCheckBoxControl";
 import EmptyRenderer from "./EmptyRenderer";
-import CustomAddButtonRenderer from "./CustomAddButtonRenderer";
-
 import Tabs from "./Tabs";
 import styles from "./page.module.css";
 import { Schema } from "./Schema";
@@ -25,6 +23,11 @@ import RadioButtonRenderer from "./RadioButtonRenderer";
 import SingleInputRenderer from "./SingleInputRenderer";
 import HeaderRenderer from "./HeaderRenderer";
 import SubHeaderRenderer from "./SubHeaderRenderer";
+import MultiSelectionCheckboxControl from "./MultiSelectionCheckboxControl";
+import DatePickerControl from "./DatePickerControl";
+import AddButtonRenderer from "./AddButtonRenderer";
+import DropDownInputGroupAddButtonRenderer from "./DropDownInputGroupAddButtonRenderer";
+import DividerRenderer from "./DividerRenderer";
 
 interface SchemaType {
   [key: string]: {
@@ -77,16 +80,56 @@ export default function Home() {
       renderer: SingleSelectionCheckBoxControl,
     },
     {
+      tester: rankWith(1000, scopeEndsWith("projFundingDate")),
+      renderer: DatePickerControl,
+    },
+    {
+      tester: rankWith(1000, scopeEndsWith("clientStratergy")),
+      renderer: SingleInputRenderer,
+    },
+    {
+      tester: rankWith(1000, scopeEndsWith("accountType")),
+      renderer: MultiSelectionCheckboxControl,
+    },
+    {
+      tester: rankWith(1000, scopeEndsWith("marginType")),
+      renderer: MultiSelectionCheckboxControl,
+    },
+    {
+      tester: rankWith(1000, scopeEndsWith("specialType")),
+      renderer: MultiSelectionCheckboxControl,
+    },
+    {
+      tester: rankWith(1000, scopeEndsWith("customerType")),
+      renderer: MultiSelectionCheckboxControl,
+    },
+    {
+      tester: rankWith(2000, scopeEndsWith("srcFunding")),
+      renderer: MultiSelectionCheckboxControl,
+    },
+    {
+      tester: rankWith(2000, scopeEndsWith("isAdvisorParticipated")),
+      renderer: MultiSelectionCheckboxControl,
+    },
+    {
+      tester: rankWith(2000, scopeEndsWith("srcWealth")),
+      renderer: MultiSelectionCheckboxControl,
+    },
+    {
       tester: rankWith(300, scopeEndsWith("spaceCreator")),
       renderer: EmptyRenderer,
     },
     {
       tester: rankWith(400, scopeEndsWith("primaryRegulators")),
-      renderer: CustomAddButtonRenderer,
+      renderer: AddButtonRenderer,
     },
     {
       tester: rankWith(400, scopeEndsWith("keyPersonalInfo")),
-      renderer: CustomAddButtonRenderer,
+      renderer: AddButtonRenderer,
+    },
+    {
+      tester: rankWith(400, scopeEndsWith("keyManagementInfo")),
+      renderer: DropDownInputGroupAddButtonRenderer,
     },
     { tester: rankWith(400, isEnumControl), renderer: RadioButtonRenderer },
     {
@@ -101,6 +144,10 @@ export default function Home() {
       tester: rankWith(2000, scopeEndsWith("heading")),
       renderer: HeaderRenderer,
     },
+    {
+      tester: rankWith(2000, scopeEndsWith("divider")),
+      renderer: DividerRenderer,
+    },
     ...materialRenderers,
   ];
 
@@ -112,15 +159,18 @@ export default function Home() {
   }
 
   return (
-    <main className="flex h-full w-full bg-[#000000]">
-      <div className="w-full">
-        <Tabs
-          tabs={Object.keys(schemas)}
-          activeTab={activeTab}
-          onTabClick={handleTabClick}
-        />
-        <div className={styles.main}>
-          <h3 className="text-left my-5 text-[#525D70] text-base">{activeTab}</h3>
+    <main className="flex flex-col h-screen bg-[#000000]">
+      <Tabs
+        tabs={Object.keys(schemas)}
+        activeTab={activeTab}
+        onTabClick={handleTabClick}
+      />
+
+      <div className="flex-grow overflow-auto">
+        <div className="w-full flex flex-col items-center">
+          <h3 className="text-left my-5 text-[#ccd0d7] text-base">
+            {activeTab}
+          </h3>
           <form onSubmit={formik.handleSubmit} className="items-center">
             <JsonForms
               schema={activeSchema}
@@ -130,11 +180,29 @@ export default function Home() {
               renderers={renderers}
               onChange={({ data }) => formik.setValues(data)}
             />
-            <button className="mt-8 w-[88px] h-[32px] bg-[#0F1D47] text-[#2C64F4]" type="submit">
-              Submit
-            </button>
           </form>
         </div>
+      </div>
+
+      <div className="flex-shrink-0 bg-[#000000] flex p-8 ml-[20rem]">
+        <button
+          className="w-[10rem] h-[2.5rem] bg-[#0F1D47] text-[#2C64F4] border border-[#2C64F4] rounded-md"
+          type="button"
+          onClick={() => {
+            formik.handleSubmit();
+          }}
+        >
+          Ready For Review
+        </button>
+        <button
+          className="w-[6rem] h-[2.5rem] bg-[#0F1D47] text-[#2C64F4] border border-[#2C64F4] rounded-md ml-4"
+          type="button"
+          onClick={() => {
+            formik.handleSubmit();
+          }}
+        >
+          Save
+        </button>
       </div>
     </main>
   );

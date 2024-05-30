@@ -1,28 +1,52 @@
+import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
+import { ControlProps } from "@jsonforms/core";
 
-const RadioButtonRenderer = ({
+interface RadioButtonRendererProps extends ControlProps {
+  data: string;
+  handleChange: (path: string, value: string) => void;
+  label: string;
+  schema: {
+    enum?: string[];
+  };
+}
+
+const RadioButtonRenderer: React.FC<RadioButtonRendererProps> = ({
   data,
   handleChange,
   path,
   label,
-  options,
   schema,
-}: any) => {
+}) => {
+  const [selectedOption, setSelectedOption] = React.useState<string>(data);
+
+  const handleRadioChange = (option: string) => {
+    setSelectedOption(option);
+    handleChange(path, option);
+  };
+
+  const options = schema.enum ?? [];
 
   return (
-    <div style={{ zIndex: 2, position: "relative", marginTop: "5%" }}>
-      <label className="pt-2 text-[12px] text-[#525D70]">{label}</label>
+    <div className="relative z-2 mt-5">
+      <label className="pt-2 text-[12px] text-[#ccd0d7]">{label}</label>
       <div className="grid grid-cols-5 xs:grid-cols-2 md:grid-cols-5">
-        {schema.enum.map((option: string, index: number) => (
-          <div key={option} className="col-span-1">
-            <label className="flex items-center h-full text-[#525D70] pt-3 text-2xs">
+        {options.map((option: string) => (
+          <div key={option}>
+            <label className="flex items-center h-full pt-3 text-[12px] text-[#ccd0d7]">
               <input
-                className="mr-2 border-[#727F95] pt-1"
-                style={{background: 'black'}}
+                className={`mr-2 pt-1 text-[12px] w-4 h-4 rounded-full appearance-none relative 
+                  ${selectedOption === option ? "bg-white" : "bg-transparent"} 
+                  ${
+                    selectedOption === option
+                      ? "border-4 border-[#2C64F4]"
+                      : "border-[#727F95]"
+                  } 
+                  border-2`}
                 type="radio"
                 value={option}
-                checked={data === option}
-                onChange={(event) => handleChange(path, event.target.value)}
+                checked={selectedOption === option}
+                onChange={() => handleRadioChange(option)}
               />
               {option}
             </label>

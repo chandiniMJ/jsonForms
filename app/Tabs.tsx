@@ -1,6 +1,12 @@
 import React from "react";
 
-const Tabs = ({ tabs, activeTab, onTabClick }: any) => {
+interface TabsProps {
+  tabs: string[];
+  activeTab: string;
+  onTabClick: (tabName: string) => void;
+}
+
+const Tabs = ({ tabs, activeTab, onTabClick }: TabsProps) => {
   return (
     <div className="flex justify-center">
       <div className="flex">

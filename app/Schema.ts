@@ -19,6 +19,9 @@ export const Schema = async () => {
           spaceCreator: {
             type: "string",
           },
+          divider: {
+            type: "string",
+          },
           govtIssuedNum: {
             type: "string",
             minLength: 1,
@@ -107,6 +110,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Jurisdiction of Formation",
                 scope: "#/properties/jurisdictionFormation",
@@ -119,6 +131,15 @@ export const Schema = async () => {
               {
                 type: "space",
                 scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -145,6 +166,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "No. of Employees",
                 scope: "#/properties/numOfEmployees",
@@ -158,9 +188,27 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Name of Primary Regulator(s)",
                 scope: "#/properties/primaryRegulators",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -186,12 +234,30 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Existing Clear Street Relationship",
                 scope: "#/properties/existRelationship",
                 options: {
                   format: "radio",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -206,6 +272,15 @@ export const Schema = async () => {
                 options: {
                   format: "radio",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -241,15 +316,17 @@ export const Schema = async () => {
         existRelationship: "Yes",
         advisorRelation: "Yes",
         clientStructureDescription: "Complex structure",
-        primaryRegulators: ["abd", "xyz"],
+        // primaryRegulators: ["abd", "xyz"],
       },
     },
-
     KeyPersonnel: {
       schema: {
         type: "object",
         properties: {
           heading: {
+            type: "string",
+          },
+          divider: {
             type: "string",
           },
           spaceCreator: {
@@ -266,26 +343,57 @@ export const Schema = async () => {
             type: "string",
             minLength: 1,
           },
-          "keyPersonalInfo": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
+          keyPersonalInfo: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
                 keyPersonalName: {
                   type: "string",
                   minLength: 1,
+                  title: "Key Personal Name",
                 },
                 tradingExperience: {
                   type: "string",
                   minLength: 1,
+                  title: "Trading Experience",
                 },
                 tradingStratergy: {
                   type: "string",
                   minLength: 1,
+                  title: "Trading Stratergy",
                 },
-              }
-            }
-          }
+              },
+            },
+          },
+          keyManagementInfo: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                title: {
+                  type: "string",
+                  enum: ["Mr.", "Ms."],
+                },
+                name: {
+                  type: "string",
+                  minLength: 1,
+                },
+                ownership: {
+                  type: "string",
+                  enum: ["0.00%", "25.0%", "50.0%", "75.0%", "100.%"],
+                },
+                address: {
+                  type: "string",
+                  minLength: 1,
+                },
+                dob: {
+                  type: "string",
+                  format: "date",
+                },
+              },
+            },
+          },
         },
         required: ["name", "email"],
       },
@@ -323,6 +431,15 @@ export const Schema = async () => {
             ],
           },
           {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
             type: "VerticalLayout",
             elements: [
               {
@@ -339,13 +456,22 @@ export const Schema = async () => {
             ],
           },
           {
-            "type": "VerticalLayout",
-            "elements": [
+            type: "VerticalLayout",
+            elements: [
               {
-                "type": "Control",
-                "scope": "#/properties/keyPersonalInfo"
-              }
-            ]
+                type: "Control",
+                scope: "#/properties/keyPersonalInfo",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
           },
           {
             type: "VerticalLayout",
@@ -364,22 +490,11 @@ export const Schema = async () => {
             ],
           },
           {
-            type: "HorizontalLayout",
+            type: "VerticalLayout",
             elements: [
               {
                 type: "Control",
-                label: "Name",
-                scope: "#/properties/name",
-              },
-              {
-                type: "Control",
-                label: "Email",
-                scope: "#/properties/email",
-              },
-              {
-                type: "Control",
-                labe: "DOB",
-                scope: "#/properties/name",
+                scope: "#/properties/keyManagementInfo",
               },
             ],
           },
@@ -468,6 +583,9 @@ export const Schema = async () => {
           spaceCreator: {
             type: "string",
           },
+          divider: {
+            type: "string",
+          },
         },
         required: ["clientType"],
       },
@@ -491,6 +609,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Account Type",
                 scope: "#/properties/accountType",
@@ -504,12 +631,30 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Account Type",
                 scope: "#/properties/marginType",
                 options: {
                   format: "radio",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -531,6 +676,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Special Customer Type",
                 scope: "#/properties/customerType",
@@ -544,12 +698,30 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Does the client have a fund admin?",
                 scope: "#/properties/isFundAdmin",
                 options: {
                   format: "radio",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -571,12 +743,30 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Will the client trade away?",
                 scope: "#/properties/tradeAway",
                 options: {
                   format: "radio",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -598,6 +788,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label:
                   "Are all assets being transferred in the name of the legal entity being onboarded?",
@@ -605,6 +804,15 @@ export const Schema = async () => {
                 options: {
                   format: "radio",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -623,6 +831,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label:
                   "Has client been exited by another Prime Broker within thepast 3 years?  If yes, what was the reason?",
@@ -630,6 +847,15 @@ export const Schema = async () => {
                 options: {
                   format: "radio",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -655,17 +881,19 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
-                label: "Projected Funding Date",
+                label:
+                  "Provide a brief business description of the Client/Fund’s strategy and expected relationship with Clear Street",
                 scope: "#/properties/clientStratergy",
-              },
-              {
-                type: "space",
-                scope: "#/properties/spaceCreator",
-              },
-              {
-                type: "space",
-                scope: "#/properties/spaceCreator",
               },
             ],
           },
@@ -678,7 +906,16 @@ export const Schema = async () => {
         properties: {
           isCustomerFunds: {
             type: "string",
-            enum: ["Prop Funds", "Customer FUnd"],
+            enum: ["Prop Funds", "Customer Funds"],
+          },
+          spaceCreator: {
+            type: "string",
+          },
+          divider: {
+            type: "string",
+          },
+          heading: {
+            type: "string",
           },
           srcFunding: {
             type: "string",
@@ -690,22 +927,16 @@ export const Schema = async () => {
               "Other",
             ],
           },
-          heading: {
-            type: "string",
-          },
+
           onShore: {
             type: "string",
             minLength: 1,
-            title: "Provide Full Legal Name",
           },
           offShore: {
             type: "string",
             minLength: 1,
-            title: "Provide Full Legal Name",
           },
-          spaceCreator: {
-            type: "string",
-          },
+
           srcWealth: {
             type: "string",
             enum: [
@@ -774,13 +1005,31 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label:
                   "Source of Funding  (if registered or has fund admin, can skip)",
                 scope: "#/properties/srcFunding",
                 options: {
-                  format: "radio",
+                  format: "checbox",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -795,6 +1044,7 @@ export const Schema = async () => {
               },
             ],
           },
+
           {
             type: "HorizontalLayout",
             elements: [
@@ -818,13 +1068,31 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label:
                   "Source of Wealth  (if registered or has fund admin, can skip)",
                 scope: "#/properties/srcWealth",
                 options: {
-                  format: "radio",
+                  format: "checkbox",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -852,6 +1120,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "Estimated Fund Leverage",
                 scope: "#/properties/fundLeverage",
@@ -865,6 +1142,15 @@ export const Schema = async () => {
                 type: "Control",
                 label: "Estimated Fund Short Balance",
                 scope: "#/properties/fundShort",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -897,6 +1183,9 @@ export const Schema = async () => {
             type: "string",
           },
           subHeading: {
+            type: "string",
+          },
+          divider: {
             type: "string",
           },
           monthlyTradeVol: {
@@ -984,6 +1273,15 @@ export const Schema = async () => {
             ],
           },
           {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
             type: "VerticalLayout",
             elements: [
               {
@@ -992,7 +1290,7 @@ export const Schema = async () => {
                 scope: "#/properties/heading",
               },
               {
-                typpe: "string",
+                type: "string",
                 label:
                   "Estimate the percentage (by market value) of client trading activity in the following categories",
                 scope: "#/properties/subHeading",
@@ -1023,6 +1321,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "% Index Options",
                 scope: "#/properties/indexOptions",
@@ -1042,12 +1349,30 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "Control",
                 label: "% Index Options",
                 scope: "#/properties/isAdvisorParticipated",
                 options: {
-                  format: "radio",
+                  format: "checkbox",
                 },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },
@@ -1084,6 +1409,15 @@ export const Schema = async () => {
             type: "HorizontalLayout",
             elements: [
               {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
                 type: "string",
                 label: "Estimated Monthly Low-Price (< $5) Traded",
                 scope: "#/properties/heading",
@@ -1105,6 +1439,15 @@ export const Schema = async () => {
               {
                 type: "space",
                 scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
               },
             ],
           },

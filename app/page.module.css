@@ -3,9 +3,5 @@
   flex-direction: column;
   align-items: center;
   width: calc(100% - 10rem);
-  /* align-items: center;
-display: flex;
-width: calc(100% - 30rem);
-justify-content: center;
-flex-direction: column; */
+  overflow: auto;
 }

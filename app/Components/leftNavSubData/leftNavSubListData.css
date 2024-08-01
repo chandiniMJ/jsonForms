@@ -1,0 +1,13 @@
+.left-nav-sub-list-data{
+    padding: 4px 0 4px 16px;
+}
+
+.sub-list-data{
+    color: #252b35;
+    border-left: 2px solid #252b35;
+}
+
+.active-sub-list-data{
+    color: white;
+    border-left: 2px solid #2a54bc;
+}

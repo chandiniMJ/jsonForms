@@ -319,6 +319,281 @@ export const Schema = async () => {
         // primaryRegulators: ["abd", "xyz"],
       },
     },
+    TaxClientOverview: {
+      schema: {
+        properties: {
+          isCustomerFunds: {
+            type: "string",
+            enum: ["Prop Funds", "Customer Funds"],
+          },
+          spaceCreator: {
+            type: "string",
+          },
+          divider: {
+            type: "string",
+          },
+          heading: {
+            type: "string",
+          },
+          srcFunding: {
+            type: "string",
+            enum: [
+              "Family Office",
+              "Personal Wealth",
+              "Outside Investors",
+              "Separately Managed Account (SMA)",
+              "Other",
+            ],
+          },
+
+          onShore: {
+            type: "string",
+            minLength: 1,
+          },
+          offShore: {
+            type: "string",
+            minLength: 1,
+          },
+
+          srcWealth: {
+            type: "string",
+            enum: [
+              "Income from Employment",
+              "Family Inheritance",
+              "Business Ownership",
+              "Sales of Shares or Other Investments",
+              "Property Sale",
+              "Other",
+            ],
+          },
+          advisorAUM: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundAUM: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          netAUM: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundLeverage: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundDebit: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          fundShort: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+          annualRevenue: {
+            type: "string",
+            minLength: 1,
+            title: "$",
+          },
+        },
+      },
+      uiSchema: {
+        type: "VerticalLayout",
+        elements: [
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Are funds trading prop funds or customer funds?",
+                scope: "#/properties/isCustomerFunds",
+                options: {
+                  format: "radio",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Source of Funding  (if registered or has fund admin, can skip)",
+                scope: "#/properties/srcFunding",
+                options: {
+                  format: "checbox",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Source of Funding - On-Shore & Off-Shore %  (if registered, can skip)",
+                scope: "#/properties/heading",
+              },
+            ],
+          },
+
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "On-Shore %",
+                scope: "#/properties/onShore",
+              },
+              {
+                type: "Control",
+                label: "Off-Shore %",
+                scope: "#/properties/offShore",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label:
+                  "Source of Wealth  (if registered or has fund admin, can skip)",
+                scope: "#/properties/srcWealth",
+                options: {
+                  format: "checkbox",
+                },
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Advisor AUM",
+                scope: "#/properties/advisorAUM",
+              },
+              {
+                type: "Control",
+                label: "Fund AUM",
+                scope: "#/properties/fundAUM",
+              },
+              {
+                type: "Control",
+                label: "Net Funds Assets held at Clear Street",
+                scope: "#/properties/netAUM",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Estimated Fund Leverage",
+                scope: "#/properties/fundLeverage",
+              },
+              {
+                type: "Control",
+                label: "Estimated Fund Debit Balance",
+                scope: "#/properties/fundDebit",
+              },
+              {
+                type: "Control",
+                label: "Estimated Fund Short Balance",
+                scope: "#/properties/fundShort",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "divider",
+                scope: "#/properties/divider",
+              },
+            ],
+          },
+          {
+            type: "HorizontalLayout",
+            elements: [
+              {
+                type: "Control",
+                label: "Estimated Annualized Revenue",
+                scope: "#/properties/annualRevenue",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+              {
+                type: "space",
+                scope: "#/properties/spaceCreator",
+              },
+            ],
+          },
+        ],
+      },
+      data: {},
+    },
     KeyPersonnel: {
       schema: {
         type: "object",

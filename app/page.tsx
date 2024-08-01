@@ -17,7 +17,6 @@ import TextInputRenderer from "./TextInputRenderer";
 import SingleSelectionCheckBoxControl from "./SingleSelectionCheckBoxControl";
 import EmptyRenderer from "./EmptyRenderer";
 import Tabs from "./Tabs";
-import styles from "./page.module.css";
 import { Schema } from "./Schema";
 import RadioButtonRenderer from "./RadioButtonRenderer";
 import SingleInputRenderer from "./SingleInputRenderer";
@@ -28,6 +27,8 @@ import DatePickerControl from "./DatePickerControl";
 import AddButtonRenderer from "./AddButtonRenderer";
 import DropDownInputGroupAddButtonRenderer from "./DropDownInputGroupAddButtonRenderer";
 import DividerRenderer from "./DividerRenderer";
+import { navigationBoddyMap } from "../public/navData";
+import LeftNav from "./left-navigation/LeftNav";
 
 interface SchemaType {
   [key: string]: {
@@ -41,6 +42,11 @@ export default function Home() {
   const [schemas, setSchemas] = useState<SchemaType>({});
   const [activeTab, setActiveTab] = useState("");
   const [loading, setLoading] = useState(true);
+  const [currentItem, setCurrentItem] = useState(1);
+  const globalProps = {
+    currentItem,
+    setCurrentItem,
+  };
 
   useEffect(() => {
     fetchAndSetSchemas();
@@ -60,14 +66,23 @@ export default function Home() {
     },
   });
 
+  // useEffect(() => {
+  //   if (schemas[activeTab]) {
+  //     const dataForActiveTab = schemas[activeTab].data;
+  //     if (dataForActiveTab) {
+  //       formik.setValues(dataForActiveTab);
+  //     }
+  //   }
+  // }, [activeTab, schemas]);
   useEffect(() => {
-    if (schemas[activeTab]) {
-      const dataForActiveTab = schemas[activeTab].data;
+    if (schemas[navigationBoddyMap[currentItem - 1]]) {
+      const dataForActiveTab =
+        schemas[navigationBoddyMap[currentItem - 1]].data;
       if (dataForActiveTab) {
         formik.setValues(dataForActiveTab);
       }
     }
-  }, [activeTab, schemas]);
+  }, [currentItem, schemas]);
 
   const handleTabClick = (name: string) => {
     setActiveTab(name);
@@ -151,59 +166,65 @@ export default function Home() {
     ...materialRenderers,
   ];
 
-  const activeSchema = schemas[activeTab]?.schema;
-  const activeUiSchema = schemas[activeTab]?.uiSchema;
+  // const activeSchema = schemas[activeTab]?.schema;
+  // const activeUiSchema = schemas[activeTab]?.uiSchema;
+  const activeSchema = schemas[navigationBoddyMap[currentItem - 1]]?.schema;
+  const activeUiSchema = schemas[navigationBoddyMap[currentItem - 1]]?.uiSchema;
+  // if (loading || !activeSchema || !activeUiSchema) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (loading || !activeSchema || !activeUiSchema) {
-    return <div>Loading...</div>;
-  }
+  const prevClickHandler = () => {
+    setCurrentItem(currentItem - 1);
+  };
+  const nextClickHandler = () => {
+    setCurrentItem(currentItem + 1);
+  };
 
   return (
-    <main className="flex flex-col h-screen bg-[#000000]">
-      <Tabs
-        tabs={Object.keys(schemas)}
-        activeTab={activeTab}
-        onTabClick={handleTabClick}
-      />
+    <div className="flex flex-row h-full bg-[#000000] pl-[2rem] pt-[5rem]">
+      <div className="left-nav h-full w-[20%] p-[2rem 0 0 2rem] min-w-[15rem]">
+        <LeftNav {...globalProps} />
+      </div>
 
-      <div className="flex-grow overflow-auto">
-        <div className="w-full flex flex-col items-center">
-          <h3 className="text-left my-5 text-[#ccd0d7] text-base">
-            {activeTab}
-          </h3>
-          <form onSubmit={formik.handleSubmit} className="items-center">
-            <JsonForms
-              schema={activeSchema}
-              uischema={activeUiSchema}
-              data={formik.values}
-              cells={materialCells}
-              renderers={renderers}
-              onChange={({ data }) => formik.setValues(data)}
-            />
-          </form>
+      <div className="flex flex-col h-full">
+        <div className="flex">
+          <div className="w-full flex flex-col items-center">
+            {/* <h3 className="text-left text-[#ccd0d7] text-base">{activeTab}</h3> */}
+            <form onSubmit={formik.handleSubmit} className="items-center">
+              <JsonForms
+                schema={activeSchema}
+                uischema={activeUiSchema}
+                data={formik.values}
+                cells={materialCells}
+                renderers={renderers}
+                onChange={({ data }) => formik.setValues(data)}
+              />
+            </form>
+          </div>
+        </div>
+
+        <div className="flex-shrink-0 bg-[#000000] flex p-8 ml-[20rem]">
+          <button
+            className="w-[10rem] h-[2.5rem] bg-[#0F1D47] text-[#2C64F4] border border-[#2C64F4] rounded-md"
+            type="button"
+            onClick={() => {
+              formik.handleSubmit();
+            }}
+          >
+            Ready For Review
+          </button>
+          <button
+            className="w-[6rem] h-[2.5rem] bg-[#0F1D47] text-[#2C64F4] border border-[#2C64F4] rounded-md ml-4"
+            type="button"
+            onClick={() => {
+              formik.handleSubmit();
+            }}
+          >
+            Save
+          </button>
         </div>
       </div>
-
-      <div className="flex-shrink-0 bg-[#000000] flex p-8 ml-[20rem]">
-        <button
-          className="w-[10rem] h-[2.5rem] bg-[#0F1D47] text-[#2C64F4] border border-[#2C64F4] rounded-md"
-          type="button"
-          onClick={() => {
-            formik.handleSubmit();
-          }}
-        >
-          Ready For Review
-        </button>
-        <button
-          className="w-[6rem] h-[2.5rem] bg-[#0F1D47] text-[#2C64F4] border border-[#2C64F4] rounded-md ml-4"
-          type="button"
-          onClick={() => {
-            formik.handleSubmit();
-          }}
-        >
-          Save
-        </button>
-      </div>
-    </main>
+    </div>
   );
 }

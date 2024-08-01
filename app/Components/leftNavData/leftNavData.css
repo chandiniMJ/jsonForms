@@ -1,0 +1,34 @@
+.left-nav-parent-data{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+
+    .parent-data-item{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin: 7px 0;
+
+        .parent-title{
+            padding-left: 0.5rem;
+            color: white;
+        }
+    }
+
+    .left-nav-sublist{
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .extended-block{
+            height: 1rem;
+            border-left: 2px solid rgb(77, 77, 77);
+        }
+        .extended-block-active{
+            height: 1rem;
+            border-left: 2px solid rgb(9, 66, 156);
+        }
+    }
+}

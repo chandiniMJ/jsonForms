@@ -1,31 +1,31 @@
 import {
   materialCells,
   materialRenderers,
-} from "@jsonforms/material-renderers";
-import { JsonForms } from "@jsonforms/react";
-import LeftNav from "./left-navigation/LeftNav";
-import { navigationBoddyMap } from "@/public/navData";
-import DividerRenderer from "./DividerRenderer";
+} from '@jsonforms/material-renderers';
+import { JsonForms } from '@jsonforms/react';
+import LeftNav from './left-navigation/LeftNav';
+import DividerRenderer from './DividerRenderer';
 import {
   isEnumControl,
   isStringControl,
   rankWith,
   scopeEndsWith,
-} from "@jsonforms/core";
-import SubHeaderRenderer from "./SubHeaderRenderer";
-import RadioButtonRenderer from "./RadioButtonRenderer";
-import DropDownInputGroupAddButtonRenderer from "./DropDownInputGroupAddButtonRenderer";
-import AddButtonRenderer from "./AddButtonRenderer";
-import EmptyRenderer from "./EmptyRenderer";
-import MultiSelectionCheckboxControl from "./MultiSelectionCheckboxControl";
-import SingleInputRenderer from "./SingleInputRenderer";
-import DatePickerControl from "./DatePickerControl";
-import SingleSelectionCheckBoxControl from "./SingleSelectionCheckBoxControl";
-import TextInputRenderer from "./TextInputRenderer";
-import { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import { Schema } from "./Schema";
-import HeaderRenderer from "./HeaderRenderer";
+} from '@jsonforms/core';
+import SubHeaderRenderer from './SubHeaderRenderer';
+import RadioButtonRenderer from './RadioButtonRenderer';
+import DropDownInputGroupAddButtonRenderer from './DropDownInputGroupAddButtonRenderer';
+import AddButtonRenderer from './AddButtonRenderer';
+import EmptyRenderer from './EmptyRenderer';
+import MultiSelectionCheckboxControl from './MultiSelectionCheckboxControl';
+import SingleInputRenderer from './SingleInputRenderer';
+import DatePickerControl from './DatePickerControl';
+import SingleSelectionCheckBoxControl from './SingleSelectionCheckBoxControl';
+import TextInputRenderer from './TextInputRenderer';
+import { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import { Schema } from './Schema';
+import HeaderRenderer from './HeaderRenderer';
+import { ncqNavigationBoddyMap } from '@/public/ncqNavData';
 
 interface SchemaType {
   [key: string]: {
@@ -37,7 +37,7 @@ interface SchemaType {
 
 export default function NCQForm() {
   const [schemas, setSchemas] = useState<SchemaType>({});
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState('');
   const [loading, setLoading] = useState(true);
   const [currentItem, setCurrentItem] = useState(1);
   const globalProps = {
@@ -50,7 +50,7 @@ export default function NCQForm() {
   }, []);
 
   const fetchAndSetSchemas = async () => {
-    const fetchedSchemas = await Schema();
+    const fetchedSchemas: any = await Schema();
     setSchemas(fetchedSchemas);
     setActiveTab(Object.keys(fetchedSchemas)[0]);
     setLoading(false);
@@ -59,7 +59,7 @@ export default function NCQForm() {
   const formik = useFormik({
     initialValues: {},
     onSubmit: (values) => {
-      console.log("Form submitted with values:", values);
+      console.log('Form submitted with values:', values);
     },
   });
 
@@ -72,9 +72,9 @@ export default function NCQForm() {
   //   }
   // }, [activeTab, schemas]);
   useEffect(() => {
-    if (schemas[navigationBoddyMap[currentItem - 1]]) {
+    if (schemas[ncqNavigationBoddyMap[currentItem - 1]]) {
       const dataForActiveTab =
-        schemas[navigationBoddyMap[currentItem - 1]].data;
+        schemas[ncqNavigationBoddyMap[currentItem - 1]].data;
       if (dataForActiveTab) {
         formik.setValues(dataForActiveTab);
       }
@@ -88,76 +88,76 @@ export default function NCQForm() {
   const renderers: any = [
     { tester: rankWith(3, isStringControl), renderer: TextInputRenderer },
     {
-      tester: rankWith(1000, scopeEndsWith("numOfEmployees")),
+      tester: rankWith(1000, scopeEndsWith('numOfEmployees')),
       renderer: SingleSelectionCheckBoxControl,
     },
     {
-      tester: rankWith(1000, scopeEndsWith("projFundingDate")),
+      tester: rankWith(1000, scopeEndsWith('projFundingDate')),
       renderer: DatePickerControl,
     },
     {
-      tester: rankWith(1000, scopeEndsWith("clientStratergy")),
+      tester: rankWith(1000, scopeEndsWith('clientStratergy')),
       renderer: SingleInputRenderer,
     },
     {
-      tester: rankWith(1000, scopeEndsWith("accountType")),
+      tester: rankWith(1000, scopeEndsWith('accountType')),
       renderer: MultiSelectionCheckboxControl,
     },
     {
-      tester: rankWith(1000, scopeEndsWith("marginType")),
+      tester: rankWith(1000, scopeEndsWith('marginType')),
       renderer: MultiSelectionCheckboxControl,
     },
     {
-      tester: rankWith(1000, scopeEndsWith("specialType")),
+      tester: rankWith(1000, scopeEndsWith('specialType')),
       renderer: MultiSelectionCheckboxControl,
     },
     {
-      tester: rankWith(1000, scopeEndsWith("customerType")),
+      tester: rankWith(1000, scopeEndsWith('customerType')),
       renderer: MultiSelectionCheckboxControl,
     },
     {
-      tester: rankWith(2000, scopeEndsWith("srcFunding")),
+      tester: rankWith(2000, scopeEndsWith('srcFunding')),
       renderer: MultiSelectionCheckboxControl,
     },
     {
-      tester: rankWith(2000, scopeEndsWith("isAdvisorParticipated")),
+      tester: rankWith(2000, scopeEndsWith('isAdvisorParticipated')),
       renderer: MultiSelectionCheckboxControl,
     },
     {
-      tester: rankWith(2000, scopeEndsWith("srcWealth")),
+      tester: rankWith(2000, scopeEndsWith('srcWealth')),
       renderer: MultiSelectionCheckboxControl,
     },
     {
-      tester: rankWith(300, scopeEndsWith("spaceCreator")),
+      tester: rankWith(300, scopeEndsWith('spaceCreator')),
       renderer: EmptyRenderer,
     },
     {
-      tester: rankWith(400, scopeEndsWith("primaryRegulators")),
+      tester: rankWith(400, scopeEndsWith('primaryRegulators')),
       renderer: AddButtonRenderer,
     },
     {
-      tester: rankWith(400, scopeEndsWith("keyPersonalInfo")),
+      tester: rankWith(400, scopeEndsWith('keyPersonalInfo')),
       renderer: AddButtonRenderer,
     },
     {
-      tester: rankWith(400, scopeEndsWith("keyManagementInfo")),
+      tester: rankWith(400, scopeEndsWith('keyManagementInfo')),
       renderer: DropDownInputGroupAddButtonRenderer,
     },
     { tester: rankWith(400, isEnumControl), renderer: RadioButtonRenderer },
     {
-      tester: rankWith(2000, scopeEndsWith("percentageInfo")),
+      tester: rankWith(2000, scopeEndsWith('percentageInfo')),
       renderer: SubHeaderRenderer,
     },
     {
-      tester: rankWith(2000, scopeEndsWith("subHeading")),
+      tester: rankWith(2000, scopeEndsWith('subHeading')),
       renderer: SubHeaderRenderer,
     },
     {
-      tester: rankWith(2000, scopeEndsWith("heading")),
+      tester: rankWith(2000, scopeEndsWith('heading')),
       renderer: HeaderRenderer,
     },
     {
-      tester: rankWith(2000, scopeEndsWith("divider")),
+      tester: rankWith(2000, scopeEndsWith('divider')),
       renderer: DividerRenderer,
     },
     ...materialRenderers,
@@ -165,8 +165,9 @@ export default function NCQForm() {
 
   // const activeSchema = schemas[activeTab]?.schema;
   // const activeUiSchema = schemas[activeTab]?.uiSchema;
-  const activeSchema = schemas[navigationBoddyMap[currentItem - 1]]?.schema;
-  const activeUiSchema = schemas[navigationBoddyMap[currentItem - 1]]?.uiSchema;
+  const activeSchema = schemas[ncqNavigationBoddyMap[currentItem - 1]]?.schema;
+  const activeUiSchema =
+    schemas[ncqNavigationBoddyMap[currentItem - 1]]?.uiSchema;
   // if (loading || !activeSchema || !activeUiSchema) {
   //   return <div>Loading...</div>;
   // }
@@ -181,7 +182,7 @@ export default function NCQForm() {
   return (
     <div className="flex flex-row h-full bg-[#000000] pl-[2rem] pt-[5rem]">
       <div className="left-nav h-full w-[20%] p-[2rem 0 0 2rem] min-w-[15rem]">
-        <LeftNav {...globalProps} />
+        <LeftNav {...globalProps} type={'NCQ'} />
       </div>
 
       <div className="flex flex-col h-full">
